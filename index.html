@@ -30,29 +30,50 @@
   <button onclick="gainXP(3)">Easy (+3 XP)</button>
 
   <script>
-    let level = 1;
-    let xp = 0;
-    let xpToNext = 10;
+   let level = 1;
+  let xp = 0;
+  let xpToNext = 10;
 
-    function gainXP(amount) {
-      xp += amount;
-      if (xp < 0) xp = 0;
+  // Load saved data
+  const savedData = localStorage.getItem("ankiGameData");
+  if (savedData) {
+    const data = JSON.parse(savedData);
+    level = data.level;
+    xp = data.xp;
+    xpToNext = data.xpToNext;
+  }
 
-      if (xp >= xpToNext) {
-        level++;
-        xp = xp - xpToNext;
-        xpToNext = Math.floor(xpToNext * 1.5);
-        alert("🎉 Level Up! You are now level " + level);
-      }
+  function saveGame() {
+    const data = {
+      level: level,
+      xp: xp,
+      xpToNext: xpToNext
+    };
+    localStorage.setItem("ankiGameData", JSON.stringify(data));
+  }
 
-      updateUI();
+  function gainXP(amount) {
+    xp += amount;
+    if (xp < 0) xp = 0;
+
+    if (xp >= xpToNext) {
+      level++;
+      xp = xp - xpToNext;
+      xpToNext = Math.floor(xpToNext * 1.5);
+      alert("🎉 Level Up! You are now level " + level);
     }
 
-    function updateUI() {
-      document.getElementById("level").innerText = level;
-      document.getElementById("xp").innerText = xp;
-      document.getElementById("xpToNext").innerText = xpToNext;
-    }
+    saveGame();
+    updateUI();
+  }
+
+  function updateUI() {
+    document.getElementById("level").innerText = level;
+    document.getElementById("xp").innerText = xp;
+    document.getElementById("xpToNext").innerText = xpToNext;
+  }
+
+  updateUI();
   </script>
 
 </body>
