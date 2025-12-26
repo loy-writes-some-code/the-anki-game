@@ -3,9 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <title>Anki Motivation Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    button {
+      margin: 4px;
+      padding: 8px 12px;
+    }
+  </style>
 </head>
 <body>
+
   <h1>📚 Anki Motivation Game</h1>
-  <p>Game is coming soon.</p>
+
+  <p><strong>Level:</strong> <span id="level">1</span></p>
+  <p><strong>XP:</strong> <span id="xp">0</span> / <span id="xpToNext">10</span></p>
+
+  <hr>
+
+  <h3>Simulate Anki Review</h3>
+  <button onclick="gainXP(-1)">Again (-1 XP)</button>
+  <button onclick="gainXP(1)">Hard (+1 XP)</button>
+  <button onclick="gainXP(2)">Good (+2 XP)</button>
+  <button onclick="gainXP(3)">Easy (+3 XP)</button>
+
+  <script>
+    let level = 1;
+    let xp = 0;
+    let xpToNext = 10;
+
+    function gainXP(amount) {
+      xp += amount;
+      if (xp < 0) xp = 0;
+
+      if (xp >= xpToNext) {
+        level++;
+        xp = xp - xpToNext;
+        xpToNext = Math.floor(xpToNext * 1.5);
+        alert("🎉 Level Up! You are now level " + level);
+      }
+
+      updateUI();
+    }
+
+    function updateUI() {
+      document.getElementById("level").innerText = level;
+      document.getElementById("xp").innerText = xp;
+      document.getElementById("xpToNext").innerText = xpToNext;
+    }
+  </script>
+
 </body>
 </html>
