@@ -74,6 +74,27 @@
   }
 
   updateUI();
+    function getXPFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const xpValue = params.get("xp");
+
+    if (xpValue !== null) {
+      const amount = parseInt(xpValue, 10);
+      if (!isNaN(amount)) {
+        gainXP(amount);
+      }
+
+      // Remove xp from URL after processing
+      params.delete("xp");
+      const newUrl =
+        window.location.pathname +
+        (params.toString() ? "?" + params.toString() : "");
+
+      window.history.replaceState({}, "", newUrl);
+    }
+  }
+
+  getXPFromURL();
   </script>
 
 </body>
